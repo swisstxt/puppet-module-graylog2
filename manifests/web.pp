@@ -1,4 +1,4 @@
-class graylog2::web { 
+class graylog2::web {
   include apache
 
   class{'passenger':
