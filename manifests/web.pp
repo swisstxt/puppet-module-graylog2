@@ -11,4 +11,11 @@ class graylog2::web {
   package{'graylog2-web-interface':
     ensure => present,
   }
+  file{'/etc/httpd/conf.d/graylog2-web-interface.conf':
+    source => "puppet:///modules/${module_name}/graylog2-web-interface.conf",
+    owner  => root,
+    group  => root,
+    mode   => 0444,
+    notify => Class['::apache::service'],
+  }
 }
