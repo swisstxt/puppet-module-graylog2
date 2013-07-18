@@ -53,7 +53,7 @@ class graylog2::web (
     require => Package['graylog2-web-interface'];
   }
   file{'/var/www/vhosts/graylog2-web-interface/config/general.yml':
-    content => template('graylog2/general.yml'),
+    content => template('graylog2/general.yml.erb'),
     owner   => root,
     group   => 0,
     mode    => '0644',
