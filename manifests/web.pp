@@ -1,5 +1,6 @@
 class graylog2::web (
   $service_alias   = $::fqdn,
+  $ldap_enable     = false,
   $ldap_host       = undef,
   $ldap_port       = '636',
   $ldap_tls        = true,
@@ -17,7 +18,7 @@ class graylog2::web (
     ensure => present,
   }
   file{'/etc/httpd/conf.d/passenger.conf':
-    source  => 'puppet:///modules/graylog2/pasenger.conf',
+    source  => 'puppet:///modules/graylog2/passenger.conf',
     owner   => root,
     group   => 0,
     mode    => '0644',
@@ -47,7 +48,7 @@ class graylog2::web (
   exec{'graylog2_chown_workaround':
     cwd         => '/var/www/vhosts/graylog2-web-interface/',
     command     => 'chown -R apache:apache tmp log vendor',
-    refreshonly => true;
+    refreshonly => false;
   }
 
   file{'/etc/httpd/conf.d/graylog2-web-interface.conf':

@@ -1,7 +1,6 @@
 ldap:
   # Is LDAP authentication enabled?
-  <% ldap_enable = ( scope.lookupvar('graylog2::web::ldap_host') and scope.lookupvar('graylog2::web::ldap_base_dn') ) %>
-  enabled: <%= ldap_enable %>
+  enabled: <%= scope.lookupvar('graylog2::web::ldap_enable') %>
 
   # Server hostname
   host: <%= scope.lookupvar('graylog2::web::ldap_host') %>
