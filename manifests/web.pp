@@ -1,5 +1,11 @@
 class graylog2::web (
-  $service_alias = $::fqdn
+  $service_alias   = $::fqdn,
+  $ldap_host       = undef,
+  $ldap_port       = '636',
+  $ldap_tls        = true,
+  $ldap_bind_user  = undef,
+  $ldap_bind_pass  = undef,
+  $ldap_base_dn    = undef   
 ){
   include apache
 
@@ -11,7 +17,7 @@ class graylog2::web (
     ensure => present,
   }
   file{'/etc/httpd/conf.d/passenger.conf':
-    source  => 'puppet:///modules/graylog/pasenger.conf',
+    source  => 'puppet:///modules/graylog2/pasenger.conf',
     owner   => root,
     group   => 0,
     mode    => '0644',
@@ -60,5 +66,22 @@ class graylog2::web (
     notify  => Class['::apache::service'],
     require => Package['graylog2-web-interface'];
   }
+  file{'/var/www/vhosts/graylog2-web-interface/config/indexer.yml':
+    source  => 'puppet:///modules/graylog2/indexer.yml',
+    owner   => root,
+    group   => 0,
+    mode    => '0644',
+    notify  => Class['::apache::service'],
+    require => Package['graylog2-web-interface'];
+  }
+  file{'/var/www/vhosts/graylog2-web-interface/config/ldap.yml':
+    content => template('graylog2/ldap.yml.erb'),
+    owner   => root,
+    group   => 0,
+    mode    => '0644',
+    notify  => Class['::apache::service'],
+    require => Package['graylog2-web-interface'];
+  }
+   
 
 }
