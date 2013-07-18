@@ -8,6 +8,9 @@ class graylog2::web {
   package{'opt-ruby-1.9.3-mod_passenger':
     ensure => present,
   }
+  package{'opt-ruby-1.9.3-rubygem-bundler':
+    ensure => present,
+  }
   package{'graylog2-web-interface':
     ensure => present,
   }
