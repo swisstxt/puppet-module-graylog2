@@ -1,4 +1,6 @@
-class graylog2::web {
+class graylog2::web (
+  $service_alias = $::fqdn
+){
   include apache
 
   #class{'passenger':
@@ -8,17 +10,55 @@ class graylog2::web {
   package{'opt-ruby-1.9.3-mod_passenger':
     ensure => present,
   }
+  file{'/etc/httpd/conf.d/passenger.conf':
+    source  => 'puppet:///modules/graylog/pasenger.conf',
+    owner   => root,
+    group   => 0,
+    mode    => '0644',
+    require => Package['opt-ruby-1.9.3-mod_passenger'];
+  }
+
   package{'opt-ruby-1.9.3-rubygem-bundler':
     ensure => present,
   }
   package{'graylog2-web-interface':
-    ensure => present,
+    ensure  => present,
+    notify  => [
+      Exec['graylog2_bundle_deploy'],
+      Exec['graylog2_chown_workaround']
+    ],
+    require => [
+      Package['opt-ruby-1.9.3-rubygem-bundler'],
+      Package['opt-ruby-1.9.3-mod_passenger'],
+    ];
   }
+  # are the gems wrong deployed in the RPM?
+  exec{'graylog2_bundle_deploy':
+    cwd         => '/var/www/vhosts/graylog2-web-interface/',
+    command     => '/opt/ruby-1.9.3/bin/bundle --deployment',
+    refreshonly => true;
+  }
+  exec{'graylog2_chown_workaround':
+    cwd         => '/var/www/vhosts/graylog2-web-interface/',
+    command     => 'chown -R apache:apache tmp log vendor',
+    refreshonly => true;
+  }
+
   file{'/etc/httpd/conf.d/graylog2-web-interface.conf':
-    source => "puppet:///modules/${module_name}/graylog2-web-interface.conf",
-    owner  => root,
-    group  => root,
-    mode   => 0444,
-    notify => Class['::apache::service'],
+    source  => "puppet:///modules/${module_name}/graylog2-web-interface.conf",
+    owner   => root,
+    group   => root,
+    mode    => '0444',
+    notify  => Class['::apache::service'],
+    require => Package['graylog2-web-interface'];
   }
+  file{'/var/www/vhosts/graylog2-web-interface/config/general.yml':
+    content => template('graylog2/general.yml'),
+    owner   => root,
+    group   => 0,
+    mode    => '0644',
+    notify  => Class['::apache::service'],
+    require => Package['graylog2-web-interface'];
+  }
+
 }
