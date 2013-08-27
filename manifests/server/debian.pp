@@ -15,13 +15,13 @@ class graylog2::server::debian {
   package{'graylog2-server':
     ensure => present,
   }->
-  file{'/etc/graylog2/graylog2.conf':
+  file{'/etc/graylog2.conf':
     content => template($::graylog2::server::graylog_conf),
     owner   => root,
     group   => root,
     mode    => '0444',
   }~>
-  file{'/etc/graylog2/elasticsearch.yml':
+  file{'/etc/graylog2-elasticsearch.yml':
     content => template($::graylog2::server::graylog_elasticsearch_conf),
     owner   => root,
     group   => root,
