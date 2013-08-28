@@ -5,7 +5,7 @@ class graylog2::server(
   include mongodb
 
   case $osfamily {
-    Debian: {
+    'Debian': {
       include ::graylog2::server::debian
     }
     # default redhat to not break anything
