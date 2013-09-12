@@ -40,6 +40,11 @@ class graylog2::web::centos {
     command     => 'chown -R apache:apache tmp log vendor',
     refreshonly => false;
   }
+  exec{'graylog2_chmod_workaround':
+    cwd         => '/var/www/vhosts/graylog2-web-interface/',
+    command     => 'chmod 0777 tmp log',
+    refreshonly => false;
+  }
 
   file{'/etc/httpd/conf.d/graylog2-web-interface.conf':
     source  => "puppet:///modules/${module_name}/graylog2-web-interface.conf",
