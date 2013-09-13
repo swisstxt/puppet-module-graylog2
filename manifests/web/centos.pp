@@ -1,4 +1,5 @@
 class graylog2::web::centos {
+  include apache
   
   #class{'passenger':
   #  base => 'opt-ruby-1.9.3',
