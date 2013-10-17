@@ -57,6 +57,6 @@ ldap:
   search_bind_dn: <%= ldap_bind_user %>
 
   # Password to bind with before performing a LDAP subtree search; search_bind_dn must also be set
-  search_bind_password: <%= scope.lookupvar('graylog2::web::ldap_base_pass') %>
+  search_bind_password: <%= scope.lookupvar('graylog2::web::ldap_bind_pass') %>
   <% end %>
 
