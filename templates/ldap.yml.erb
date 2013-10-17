@@ -28,6 +28,10 @@ ldap:
 
   # If set, applies a pattern the supplied username to convert it to a DN before attempting to bind with the user's password
   # user_dn_pattern: uid=%s,ou=people,dc=ldap,dc=example,dc=com
+  <% user_dn_pattern = scope.lookupvar('graylog2::web::ldap_user_dn_pattern') %>
+  <% if user_dn_pattern %>
+  user_dn_pattern: <%= user_dn_pattern %>
+  <% end %>
 
   ###
   # Subtree search
@@ -38,7 +42,10 @@ ldap:
 
   # If set, searches for the user with the specified LDAP filter; search_base_dn must also be set
   # search_filter: (uid=%s)
-  search_filter: <%= scope.lookupvar('graylog2::web::ldap_search_filter') %>
+  <% search_filter = scope.lookupvar('graylog2::web::ldap_search_filter') %>
+  <% if search_filter %>
+  search_filter: <%= search_filter %>
+  <% end %>
 
   ###
   # Authenticated subtree search
