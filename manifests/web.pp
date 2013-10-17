@@ -4,6 +4,8 @@ class graylog2::web (
   $ldap_host       = undef,
   $ldap_port       = '636',
   $ldap_tls        = true,
+  $ldap_user_dn_pattern = undef,
+  $ldap_search_filter = undef,
   $ldap_bind_user  = undef,
   $ldap_bind_pass  = undef,
   $ldap_base_dn    = undef   
