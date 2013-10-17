@@ -38,6 +38,7 @@ ldap:
 
   # If set, searches for the user with the specified LDAP filter; search_base_dn must also be set
   # search_filter: (uid=%s)
+  search_filter: <%= scope.lookupvar('graylog2::web::ldap_search_filter') %>
 
   ###
   # Authenticated subtree search
