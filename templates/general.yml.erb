@@ -2,5 +2,5 @@ general:
   external_hostname: '<%= scope.lookupvar('graylog2::web::service_alias') %>'
   date_format: "%d.%m.%Y - %H:%M:%S"
   allow_version_check: false
-  custom_cookie_name: 'graylog2_<%= scope.lookupvar('::mpc_zone') + '_' + scope.lookupvar('::mpc_project') + '_' + scope.lookupvar('::mpc_bu') %>'
+  custom_cookie_name: 'graylog2'
 
